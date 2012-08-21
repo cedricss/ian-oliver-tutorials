@@ -187,19 +187,15 @@ function expressionWithKeyRESTendpoint(key)
    }
 }
 
-function start(url)
+start = parser
 {
-  match (url)
-   {
-       case {path: [] ... }: hello();
-       case {path: ["expressions" ] ... } : expressionsRESTendpoint();
-       case {path: ["expressions" | [ key | _ ] ] ...} : expressionWithKeyRESTendpoint(key);
-       case {~path ...}: error();
-   }
+       case "/": hello();
+       case "/expressions" : expressionsRESTendpoint();
+       case "/expressions/" key=((!"/".)*) (.*): expressionWithKeyRESTendpoint(Text.to_string(key));
+       default: error();
 }
-
 
 Server.start(
    Server.http,
-     [ {resources: @static_include_directory("resources")} , {dispatch: start} ]
+     [ {resources: @static_include_directory("resources")} , {custom: start} ]
 );
