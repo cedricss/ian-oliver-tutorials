@@ -8,7 +8,7 @@ database regexDB {
 
 function hello()
 {
-   Resource.styled_page("Expressions Server - Hello", ["/resources/css.css"],
+   Resource.page("Expressions Server - Hello",
       <div>
          This server contains various regular expressions for data analysis either presented individually or by grouping and returned as JSON objects via the REST interface. See API documents for more information
        </> );
@@ -17,7 +17,7 @@ function hello()
 
 function error()
 {
-   Resource.styled_page("Expressions Server - Error", ["/resources/css.css"],
+   Resource.page("Expressions Server - Error",
       <div>
           No idea of what you want, go read the API documents for the web and REST/JSON interfaces, or better still go read the source code!
       </> );
@@ -197,5 +197,9 @@ start = parser
 
 Server.start(
    Server.http,
-     [ {resources: @static_include_directory("resources")} , {custom: start} ]
+      [
+       {resources: @static_include_directory("resources")} ,
+       {register: {css: ["/resources/css.css"] }},
+       {custom: start}
+      ]
 );
